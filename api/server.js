@@ -25,7 +25,7 @@ const server = express();
 
 const sessionConfig = {
   // session storage options
-  name: "chocolatechip", // default would be sid
+  name: "session", // default would be sid
   secret: "keep it secret", //used for encryption (must be an environment variable )
   saveUninitialized: true, // has implications with GDPR laws
   resave: false,
@@ -52,11 +52,14 @@ const sessionConfig = {
 
 server.use(helmet());
 server.use(express.json());
-server.use(cors());
+server.use(cors({
+   credentials: true,
+   origin: 'http://localhost:3000'
+}));
 server.use(sessions(sessionConfig)); // adds a res.session object
 
-server.use("/api/auth", authRouter);
-server.use("/api/users", usersRouter);
+server.use("/api", authRouter);
+server.use("/auth/users", usersRouter);
 
 server.get("/", (req, res) => {
   res.json({ api: "up" });

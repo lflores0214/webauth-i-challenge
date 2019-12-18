@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useCookies } from "react-cookie"
 import { Link } from "react-router-dom"
 import axios from "axios";
 
@@ -8,6 +9,7 @@ const Login = (props) => {
     username: "",
     password: ""
   });
+  const [cookie, setCookie, removeCookie] = useCookies(['session'])
 
   const handleChange = e => {
     setCreds({
@@ -18,11 +20,13 @@ const Login = (props) => {
   const login = e => {
     e.preventDefault();
     axios
-      .post("http://localhost:8000/api/auth/login", creds)
+      .post("http://localhost:8000/api/login", creds)
       .then(response => {
-        console.log(response.data);
+        console.log(response.headers);
         const { data } = response;
-        localStorage.setItem("token", data.payload);
+        // localStorage.setItem("token", data.token);
+        // setCookie(response.headers.session)
+        
         props.history.push('/users')
       })
       .catch(error => {

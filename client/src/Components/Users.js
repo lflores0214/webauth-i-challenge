@@ -6,7 +6,7 @@ const Users = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/users")
+      .get("http://localhost:8000/auth/users")
       .then(response => {
         console.log(response);
         setUsers(response.data);

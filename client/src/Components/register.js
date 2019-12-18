@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import axios from "axios";
 
 const Login = (props) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  
   const [creds, setCreds] = useState({
     username: "",
     password: ""
@@ -18,7 +18,7 @@ const Login = (props) => {
   const register = e => {
     e.preventDefault();
     axios
-      .post("http://localhost:8000/api/auth/register", creds)
+      .post("http://localhost:8000/api/register", creds)
       .then(response => {
         console.log(response.data);
         props.history.push('/')
