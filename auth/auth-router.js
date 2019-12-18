@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 const router = require("express").Router();
-const secrets = require("../config/secrets")
+const secrets = require("../config/secrets");
 
 const users = require("../users/users-model");
 
@@ -33,16 +33,16 @@ router.post("/login", (req, res) => {
         const token = generateToken(user);
 
         req.session.user = user;
-        console.log(user)
+        console.log(user);
         res.status(200).json({
           message: `Welcome ${user.username}, you are now logged in`,
-          token,
+          token
         });
       } else {
+        res.status(401).json({
+          errorMessage: "You shall not pass!"
+        });
       }
-      res.status(401).json({
-        errorMessage: "You shall not pass!"
-      });
     })
     .catch(error => {
       console.log(error);
@@ -52,7 +52,7 @@ router.post("/login", (req, res) => {
     });
 });
 router.get("/logout", (req, res) => {
-    console.log("TEST")
+  console.log("TEST");
   if (req.session) {
     req.session.destroy(error => {
       if (error) {
@@ -67,17 +67,17 @@ router.get("/logout", (req, res) => {
     res.status(200).end();
   }
 });
-function generateToken(user){
-    const payload = {
-        subject:user.id, //sub property
-        username: user.username,
-        // any other data 
-    }
-    
-    const options = {
-        expiresIn:'1h'
-    }
-    return jwt.sign(payload, secrets.jwtSecret, options)
+function generateToken(user) {
+  const payload = {
+    subject: user.id, //sub property
+    username: user.username
+    // any other data
+  };
+
+  const options = {
+    expiresIn: "1h"
+  };
+  return jwt.sign(payload, secrets.jwtSecret, options);
 }
 
 module.exports = router;
